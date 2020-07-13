@@ -3,18 +3,64 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.10.2",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "drei": "0.0.60",
+    "prop-types": "^15.7.2",
+    "react": "0.0.0-experimental-7f28234f8",
+    "react-dom": "0.0.0-experimental-7f28234f8",
+    "react-redux": "^7.2.0",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.1",
+    "react-spring": "^9.0.0-rc.3",
+    "react-three-fiber": "^4.2.13",
+    "react-three-gui": "^0.1.5",
+    "react-use-gesture": "^7.0.15",
+    "react-xr": "^1.0.8",
+    "redux": "^4.0.5",
+    "three": "^0.118.3",
+    "use-cannon": "^0.5.0"
+  },
+  "devDependencies": {
+    "@types/react-redux": "^7.1.9",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-jest": "^23.17.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^2.5.0",
+    "lint-staged": "^10.2.10",
+    "prettier": "^1.19.1",
+    "source-map-explorer": "^2.4.2",
+    "redux-devtools": "^3.5.0",
+    "stylelint": "^13.6.0",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-scss": "^3.17.2",
+    "typescript": "^3.9.5"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,json,css,scss,md,ts,tsx}": [
+      "prettier --write",
+      "git add"
+    ],
+    "src/**/*.{scss,css}": [
+      "prettier --config .prettierrc --write",
+      "stylelint --config=.stylelintrc --fix",
+      "git add"
+    ]
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prettier": "prettier --write \"**/*.{json,md,scss,yaml,yml,js,jsx,tsx,ts}\""
   },
   "eslintConfig": {
     "extends": "react-app"

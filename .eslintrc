@@ -1,0 +1,54 @@
+{
+    "extends": ["airbnb", "prettier", "prettier/react"],
+    "plugins": ["prettier"],
+    "env": {
+      "es6": true
+    },
+    "globals": {
+      "window": true,
+      "jest": true,
+      "document": true,
+      "localStorage": true,
+      "FormData": true,
+      "FileReader": true,
+      "Blob": true,
+      "navigator": true,
+      "Headers": true,
+      "Request": true,
+      "fetch": true
+    },
+    "parser": "babel-eslint",
+  
+    "rules": {
+      "import/no-useless-path-segments": 0,
+      "jsx-a11y/click-events-have-key-events": 1,
+      "no-param-reassign": 0,
+      "no-plusplus": 0,
+      "no-restricted-imports": 0,
+      "no-void": 0,
+      "prefer-destructuring": 0,
+      "react/forbid-foreign-prop-types": 2,
+      "react/jsx-props-no-spreading": 0,
+      "react/no-deprecated": 1
+    },
+    "overrides": [
+      {
+        "files": ["**/*.test.js"],
+        "env": {
+          "jest": true
+        },
+        "plugins": ["jest"],
+        "rules": {
+          "jest/no-disabled-tests": "warn",
+          "jest/no-focused-tests": "error",
+          "jest/no-identical-title": "error",
+          "jest/prefer-to-have-length": "warn",
+          "jest/valid-expect": "error"
+        }
+      }
+    ],
+    "settings": {
+      "propWrapperFunctions": ["forbidExtraProps", "exact", "Object.freeze"]
+    }
+  }
+  
