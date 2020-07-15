@@ -2,7 +2,7 @@
 see: <https://www.reddit.com/r/threejs/comments/hqf25m/reactthreefiber_is_super_powerful/>
 
 and <https://giant.gfycat.com/SardonicCrazyBlacklemur.webm>
-
+<img src="https://thumbs.gfycat.com/SardonicCrazyBlacklemur-size_restricted.gif" />
 ## Available Scripts
 
 In the project directory, you can run:
