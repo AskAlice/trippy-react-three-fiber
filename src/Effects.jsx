@@ -29,21 +29,21 @@ export default function Effects() {
   return (
     <>
       <ThreeControls
-      autoRotate
-      enablePa
+      // autoRotate
+      enablePan
       enableZoom
       enableDamping
       dampingFactor={0.5}
         rotateSpeed={2}
-        autoRotateSpeed={230}
+        // autoRotateSpeed={230}
       maxPolarAngle={Math.PI*2}
       minPolarAngle={-Math.PI*2}
     />
     <effectComposer ref={composer} args={[gl]}>
       <renderPass attachArray="passes" scene={scene} camera={camera} />
       {/* <waterPass attachArray="passes" factor={2} /> */}
-      <unrealBloomPass attachArray="passes" args={[aspect, 2, 2, 0.221]} />
-      <afterimagePass attachArray="passes" uniforms-damp-value={0.991} />
+      {/* <unrealBloomPass attachArray="passes" args={[aspect, 2, 2, 0.221]} /> */}
+      {/* <afterimagePass attachArray="passes" uniforms-damp-value={0.991} /> */}
       
       <shaderPass attachArray="passes" args={[FXAAShader]} uniforms-resolution-value={[1 / size.width, 1 / size.height]} renderToScreen />
       </effectComposer>

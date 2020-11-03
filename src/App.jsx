@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-return-assign */
 /* eslint-disable no-multi-assign */
@@ -10,8 +11,9 @@ import { Controls, useControl } from 'react-three-gui';
 import * as meshline from 'threejs-meshline'
 import MidiFile from 'midifile';
 import MidiEvents from 'midievents';
-import * as drums from './drums.mid';
+import  drums from './drums.mid';
 import  Effects  from './Effects'
+import tesselated from './tesselated.mp3';
 
 extend(meshline)
 
@@ -151,40 +153,82 @@ function Rig({ mouse }) {
   useFrame(() => {
     // console.log(midi);
     // camera.position.z = 5 + 5*Math.sin(new Date());
-    // camera.lookAt(0, 0, 0)
+     camera.lookAt(0, 0, 0)
   })
   return null
 }
+function Boxx(props) {
+  // This reference will give us direct access to the mesh
+  const mesh = useRef()
 
-const Timer = ({startTime}) => {
-  console.log("timer!");
+  // Set up state for the hovered and active state
+  const [hovered, setHover] = useState(false)
+  const [active, setActive] = useState(false)
+
+  // Rotate mesh every frame, this is outside of React without overhead
+  useFrame(() => {
+    mesh.current.rotation.x = mesh.current.rotation.y += 0.01
+  })
+
+  return (
+    <a.mesh
+      {...props}
+      ref={mesh}
+      scale={active ? [1.5, 1.5, 1.5] : [1, 1, 1]}
+      onClick={(e) => setActive(!active)}
+      onPointerOver={(e) => setHover(true)}
+      onPointerOut={(e) => setHover(false)}>
+      <a.boxGeometry args={[1, 1, 1]} attach="geometry" />
+      <meshStandardMaterial  attach="material" color={hovered ? 'hotpink' : 'orange'} />
+    </a.mesh>
+  )
+}
+const Timer = ({startTime, audio, id, position}) => {
   const [midi,setMidi] = useState();
+  const mesh = useRef()
+
+  // Set up state for the hovered and active state
+  const [active, setActive] = useState(false);
   React.useEffect(()=>{
     getBuffer(drums,(b)=>{
       const file = new MidiFile(b);
       console.log(file);
-      setMidi(new MidiFile(b));
-
+      file.header.setTicksPerBeat(139);
+      setMidi(file);
     },()=>{})
   },[])
   useFrame(({},delta)=>{
+    // console.log(audio?.current?.currentTime);
     const elapsedMs = (Date.now()-startTime);
     // console.log(delta, elapsedMs, elapsedMs-(delta*1000));
      if(typeof midi !== 'undefined')
      {
+      //  console.log(mesh.current);
        const midiEvents = midi.getEvents();
         midiEvents.forEach(event => {
           // console.log(event.playTime, elapsedMs);
-          if(event.playTime >= elapsedMs-(delta*1000) && event.playTime <= elapsedMs &&event.type === 8)
-            if(event.subtype === 9)
-              console.log("noteOn", event)
-            else if(event.subtype === 8)
-              console.log("noteOff", event)
+          if(event.playTime >= elapsedMs-(delta*2000) && event.playTime <= elapsedMs &&event.type === 8 && event.param1 === id)
+            if(event.subtype === 8)
+              {
+                  mesh.current.scale.set(1,1,1);
+                  console.log("noteOff", event.param1, event)
+              }
+              else if(event.subtype === 9){
+                  mesh.current.scale.set(1.5,1.5,1.5);;
+                console.log("noteOn", event.param1, event)
+            }
         })
       }
     })
   return (
-    <></>
+    <mesh
+    position={position}
+    ref={mesh}
+    scale={active ? [1.5, 1.5, 1.5] : [1, 1, 1]}
+  >
+    <icosahedronGeometry args={[1,0]} attach="geometry" />
+    <meshStandardMaterial color="hotpink" attach="material" />
+  </mesh>
   )
 };
 export default function App() {
@@ -193,40 +237,46 @@ export default function App() {
   const mesh = useRef();
   const light = useRef();
   const count = 50;
+  const audio = useRef();
+  const [startTime, setStartTime] = useState(0);
   const dummy = useMemo(() => new THREE.Object3D(), [])
-  const aspect =  window.width/window.height
+  const aspect =  window.width/window.height;
+
+  console.log(startTime);
   const onMouseMove = useCallback(({ clientX: x, clientY: y }) => (mouse.current = [x - window.innerWidth / 2, y - window.innerHeight / 2]), [])
   return (
     <div id="container" style={{ width: '100%', height: '100%' }} onMouseMove={onMouseMove}>
     <Canvas
+    onClick={(e)=>{if(startTime === 0){setStartTime(Date.now);audio.current.play();}}}
       style={{ background: 'radial-gradient(at 50% 70%, #200f20 40%, #090b1f 80%, #050523 100%)' }}
       camera={{ position: [0, 0, 8] }}
         shadowMap>
-     <Timer startTime={Date.now()} />
       <Rig mouse={mouse} />
-      <ambientLight intensity={0.4} />
-      <pointLight intensity={20} position={[-10, -25, -10]} color="#200f20" />
+      {/* <ambientLight intensity={0.4} /> */}
+      {/* <pointLight intensity={20} position={[-10, -25, -10]} color="#200f20" /> */}
       <spotLight
         castShadow
-        intensity={4}
+        intensity={1}
         angle={Math.PI / 8}
         position={[15, 25, 5]}
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
       />
-
+      <ambientLight intensity={0.5} />
+      <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
+      <pointLight position={[-10, -10, -10]} />
+     <Timer startTime={startTime} audio={audio} id={40} position={[-2,0,0]} />
+     <Timer startTime={startTime} audio={audio} id={36} position={[0,0,0]}/>
+     <Timer startTime={startTime} audio={audio} id={41} position={[2,0,0]}/>
      
         <Effects />
-        <ambientLight />
-        <pointLight position={[10, 0, 10]} intensity={1} />
-        <Boxes count={80} />
-        <pointLight ref={light} distance={40} intensity={8} color="lightblue" />
-
-        <instancedMesh ref={mesh} args={[null, null, count]}>
-          <dodecahedronBufferGeometry attach="geometry" args={[1, 0]} />
-          <meshStandardMaterial attach="material" color="#700020" />
-        </instancedMesh>
+        {/* <Boxx position={[0,0,0]} /> */}
+        {/* <ambientLight />
+        <pointLight position={[10, 0, 10]} intensity={1} /> */}
+        <Boxes count={5} />
+        {/* <pointLight ref={light} distance={40} intensity={8} color="lightblue" /> */}
       </Canvas>
+      <audio src={tesselated} ref={audio} />
       </div>
   )
 }
