@@ -8,6 +8,8 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "drei": "0.0.60",
+    "midievents": "^2.0.0",
+    "midifile": "^2.0.0",
     "prop-types": "^15.7.2",
     "react": "0.0.0-experimental-7f28234f8",
     "react-dom": "0.0.0-experimental-7f28234f8",
@@ -21,7 +23,7 @@
     "react-use-gesture": "^7.0.15",
     "react-xr": "^1.0.8",
     "redux": "^4.0.5",
-    "three": "^0.118.3",
+    "three": "^0.122.0",
     "threejs-meshline": "^2.0.11",
     "use-cannon": "^0.5.0"
   },
