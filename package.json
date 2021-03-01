@@ -21,7 +21,7 @@
     "react-use-gesture": "^7.0.15",
     "react-xr": "^1.0.8",
     "redux": "^4.0.5",
-    "three": "^0.118.3",
+    "three": "^0.125.0",
     "threejs-meshline": "^2.0.11",
     "use-cannon": "^0.5.0"
   },
